@@ -1,0 +1,41 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ResourceManagerApp.MainPage"
+             xmlns:vm="clr-namespace:ResourceManagerApp.ViewModels">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <!-- Resource Monitoring -->
+            <Label Text="Ресурсный мониторинг" FontSize="Large" HorizontalOptions="Center" />
+            <Label Text="Загрузка ЦП" FontSize="Medium" />
+            <ProgressBar Progress="{Binding CPUUsage}" />
+            <Label Text="Доступная память (MB)" FontSize="Medium" />
+            <Label Text="{Binding MemoryUsage}" FontSize="Medium" />
+
+            <!-- File System Management -->
+            <Label Text="Файловая система" FontSize="Large" HorizontalOptions="Center" />
+            <Entry Text="{Binding CurrentDirectory}" Placeholder="Введите путь" />
+            <CollectionView ItemsSource="{Binding FileSystemEntries}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="{Binding Name}" WidthRequest="200" />
+                            <Label Text="{Binding Size}" WidthRequest="100" />
+                            <Label Text="{Binding LastModified}" WidthRequest="200" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <StackLayout Orientation="Horizontal" Spacing="10">
+                <Entry x:Name="NewFileNameEntry" Placeholder="Имя файла" />
+                <Button Text="Создать" CommandParameter="{Binding Text, Source={x:Reference NewFileNameEntry}}" Clicked="OnCreateFileClicked" />
+                <Button Text="Удалить" CommandParameter="{Binding Text, Source={x:Reference NewFileNameEntry}}" Clicked="OnDeleteFileClicked" />
+            </StackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
